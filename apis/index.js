@@ -30,6 +30,69 @@ export default {
 		};
 		http.HTTP(allParams);
 	},
+	
+	grab(param, callback) {
+		var allParams = {
+			url: 'Project/Solely/grab',
+			type: 'post',
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
+	getRank(param, callback) {
+		var allParams = {
+			url: 'Project/Solely/getRank',
+			type: 'post',
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
+	rankGet(param, callback) {
+		var allParams = {
+			url: 'Common/Rank/get',
+			type: 'post',
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
+	thirdAppGet(param, callback) {
+		var allParams = {
+			url: 'Common/ThirdApp/get',
+			type: 'post',
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
+	
+	register(param, callback) {
+	
+		var allParams = {
+			url: 'Project/Solely/register',
+			type: 'post',
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
 
 
 	bindShop(param, callback) {
@@ -317,10 +380,10 @@ export default {
 		http.HTTP(allParams);
 	},
 
-	shopLogin(param, callback) {
+	userLogin(param, callback) {
 
 		var allParams = {
-			url: 'Func/Common/loginByShop',
+			url: 'Func/Common/loginByUser',
 			type: 'post',
 			data: param,
 			sCallback: function(data) {

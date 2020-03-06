@@ -11,7 +11,7 @@
 					<image src="../../static/images/the-login-icon.png" mode=""></image>
 				</view>
 				<view class="input">
-					<input type="text" value="" placeholder="请输入手机号" placeholder-class="placeholder">
+					<input type="text" v-model="submitData.phone" placeholder="请输入手机号" placeholder-class="placeholder">
 				</view>
 			</view>
 			<view class="item flex mgb20">
@@ -19,7 +19,7 @@
 					<image src="../../static/images/the-login-icon1.png" mode=""></image>
 				</view>
 				<view class="input">
-					<input type="password" value="" placeholder="请输入密码" placeholder-class="placeholder">
+					<input type="password" v-model="submitData.password" placeholder="请输入密码" placeholder-class="placeholder">
 				</view>
 			</view>
 			<view class="item flex">
@@ -35,7 +35,7 @@
 			</view>
 			
 			<view class="item loginbtn center flexCenter" style="margin-top: 80rpx;">
-				<button class="btn" type="submint" @click="Router.navigateTo({route:{path:'/pages/login/login'}})">注册</button>
+				<button class="btn" type="submint" @click="Utils.stopMultiClick(submit)">注册</button>
 			</view>
 		</view>
 		
@@ -48,23 +48,64 @@
 		data() {
 			return {
 				Router:this.$Router,
-				is_show: false,
-				wx_info:{}
+				Utils:this.$Utils,
+				showView: false,
+				wx_info:{},
+				is_show:false,
+				submitData:{
+					phone:'',
+					password:''
+				}
 			}
 		},
-		onLoad() {
+		
+		onLoad(options) {
 			const self = this;
 			// self.$Utils.loadAll(['getMainData'], self);
 		},
+		
 		methods: {
 			
-			getMainData() {
+			submit() {
 				const self = this;
-				console.log('852369')
+				
+				uni.setStorageSync('canClick', false);
+				const pass = self.$Utils.checkComplete(self.submitData);
+				console.log('pass', pass);
+				console.log('self.submitData',self.submitData)
+				
+				if (pass) {	
+					self.register();
+				} else {
+					uni.setStorageSync('canClick', true);
+					self.$Utils.showToast('请补全注册信息', 'none')
+				};
+			},
+			
+			register() {
+				const self = this;
 				const postData = {};
-				postData.tokenFuncName = 'getProjectToken';
-				self.$apis.orderGet(postData, callback);
-			}
+				postData.data = {
+					phone:self.submitData.phone,
+					password:self.submitData.password
+				};
+				const callback = (data) => {				
+					if (data.solely_code == 100000) {					
+						self.$Utils.showToast('注册成功', 'none', 1000);
+						uni.setStorageSync('user_token', data.token);
+						uni.setStorageSync('user_info', data.info);
+						setTimeout(function() {
+							uni.navigateBack({
+								delta:1
+							})
+						}, 1000);
+					} else {
+						uni.setStorageSync('canClick', true);
+						self.$Utils.showToast(data.msg, 'none', 1000)
+					}	
+				};
+				self.$apis.register(postData, callback);
+			},
 		}
 	};
 </script>

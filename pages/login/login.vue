@@ -11,7 +11,7 @@
 					<image src="../../static/images/the-login-icon.png" mode=""></image>
 				</view>
 				<view class="input">
-					<input type="text" value="" placeholder="请输入手机号" placeholder-class="placeholder">
+					<input type="text" v-model="submitData.login_name" placeholder="请输入手机号" placeholder-class="placeholder">
 				</view>
 			</view>
 			<view class="item flex mgb20">
@@ -19,11 +19,11 @@
 					<image src="../../static/images/the-login-icon1.png" mode=""></image>
 				</view>
 				<view class="input">
-					<input type="password" value="" placeholder="请输入密码" placeholder-class="placeholder">
+					<input type="password" v-model="submitData.password" placeholder="请输入密码" placeholder-class="placeholder">
 				</view>
 			</view>
 			
-			<view class="item loginbtn mgb20 center pubBj white flexCenter" style="margin-top: 140rpx;" @click="Router.navigateTo({route:{path:'/pages/index/index'}})">
+			<view class="item loginbtn mgb20 center pubBj white flexCenter" style="margin-top: 140rpx;" @click="submit">
 				<button class="btn" type="submint">登录</button>
 			</view>
 			<view class="item center flexCenter registerBtn"  @click="Router.navigateTo({route:{path:'/pages/register/register'}})">注册</view>
@@ -38,23 +38,47 @@
 		data() {
 			return {
 				Router:this.$Router,
-				is_show: false,
-				wx_info:{}
+				submitData:{
+					login_name:'',
+					password:''
+				}
 			}
 		},
+		
 		onLoad() {
 			const self = this;
+		
 			// self.$Utils.loadAll(['getMainData'], self);
 		},
+		
 		methods: {
 			
-			getMainData() {
+			submit() {
 				const self = this;
-				console.log('852369')
-				const postData = {};
-				postData.tokenFuncName = 'getProjectToken';
-				self.$apis.orderGet(postData, callback);
-			}
+				const postData = {
+					login_name: self.submitData.login_name,
+					password:self.submitData.password
+				};
+				if (self.$Utils.checkComplete(self.submitData)) {
+					const callback = (res) => {
+						if (res.solely_code == 100000) {
+							console.log(res);
+							uni.setStorageSync('user_token', res.token);
+							uni.setStorageSync('user_info', res.info);
+							setTimeout(function() {
+								uni.navigateBack({
+									delta:1
+								})
+							}, 1000);
+						} else {
+							self.$Utils.showToast(res.msg,'none')
+						}
+					}
+					self.$apis.userLogin(postData, callback);
+				} else {
+					self.$Utils.showToast('请补全登录信息', 'none')
+				};
+			},
 		}
 	};
 </script>

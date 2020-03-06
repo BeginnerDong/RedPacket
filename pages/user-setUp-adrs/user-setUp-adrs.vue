@@ -2,11 +2,11 @@
 	<view>
 		
 		<view class="mglr4 pdtb10" style="border-bottom: 1px solid #ddd;">
-			<input type="text" value="" placeholder="请输入" placeholder-class="placeholder">
+			<input type="text" v-model="submitData.address" placeholder="请填写您的地址" placeholder-class="placeholder">
 		</view>
 		
 		<view class="submitbtn" style="margin-top: 500rpx;">
-			<view class="btn">确定</view>
+			<view class="btn" @click="Utils.stopMultiClick(userInfoUpdate)">确定</view>
 		</view>
 		
 	</view>
@@ -17,24 +17,50 @@
 		data() {
 			return {
 				Router:this.$Router,
-				showView: false,
-				score:'',
-				wx_info:{},
-				is_show:false
+				Utils:this.$Utils,
+				submitData:{
+					address:''
+				}
 			}
 		},
-		onLoad() {
+		
+		onLoad(options) {
 			const self = this;
+			self.submitData.address = options.name
 			//self.$Utils.loadAll(['getMainData'], self);
 		},
+		
 		methods: {
-			getMainData() {
+			
+			
+			userInfoUpdate() {
 				const self = this;
-				console.log('852369')
+				uni.setStorageSync('canClick', false);
+				if(self.submitData.address==''){
+					uni.setStorageSync('canClick', true);
+					self.$Utils.showToast('请填写地址', 'none', 1000)
+					return
+				};
 				const postData = {};
-				postData.tokenFuncName = 'getProjectToken';
-				self.$apis.orderGet(postData, callback);
-			}
+				postData.tokenFuncName = 'getUserToken';
+				postData.searchItem = {
+					user_no: uni.getStorageSync('userInfo').user_no
+				};
+				postData.data = {};
+				postData.data = self.$Utils.cloneForm(self.submitData);
+				const callback = (data) => {				
+					if (data.solely_code == 100000) {
+						uni.setStorageSync('canClick', true);
+						uni.navigateBack({
+							delta:1
+						})
+					} else {
+						uni.setStorageSync('canClick', true);
+						self.$Utils.showToast(data.msg, 'none', 1000)
+					}	
+				};
+				self.$apis.userInfoUpdate(postData, callback);
+			},
 		}
 	};
 </script>

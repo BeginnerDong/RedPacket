@@ -26,6 +26,7 @@ export default {
         };
 	
 		var custom_header = {'content-type': 'application/json',};
+		
 		uni.showLoading({
 			title: '加载中',
 			mask: true

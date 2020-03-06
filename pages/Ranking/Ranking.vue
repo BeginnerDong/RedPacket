@@ -5,15 +5,15 @@
 			<view class="title pdb20 center fs15 flexCenter"><image class="icon" src="../../static/images/list-icon.png" mode=""></image>我的红包排行榜</view>
 			<view class="flexRowBetween center fs12">
 				<view class="item">
-					<view class="num">5322</view>
+					<view class="num">{{rankData.total_rank}}</view>
 					<view class="color9">累计总排名</view>
 				</view>
 				<view class="item">
-					<view class="num">532+</view>
+					<view class="num">{{rankData.today_rank}}</view>
 					<view class="color9">今日排名</view>
 				</view>
 				<view class="item">
-					<view class="num pubColor">5</view>
+					<view class="num pubColor">{{rankData.today_count}}</view>
 					<view class="color9">获得红包</view>
 				</view>
 			</view>
@@ -22,19 +22,25 @@
 		
 		
 		<view class="rankList fs13 mglr4">
-			<view class="pdb10 center fs15 flexCenter"><image src="../../static/images/list-icon1.png" mode="" style="width: 36rpx;height: 30rpx;margin-right: 20rpx;"></image>累计奖励排行榜</view>
-			<view class="item flexRowBetween" v-for="rankData in 6">
-				<view class="ll flex">
-					<view class="num" >{{rankData}}</view>
-					<view class="fs13">156****2356</view>
-				</view>
-				<view class="rr flexEnd">
-					<view class="flexColumn">
-						<view class="pubColor">665</view>
-						<view class="fs10 color6">获得红包</view>
+			<view class="pdb10 center fs15 flexCenter">
+				<image src="../../static/images/list-icon1.png" mode="" style="width: 36rpx;height: 30rpx;margin-right: 20rpx;">
+					
+				</image>累计奖励排行榜</view>
+			<view class="realList">
+				<view class="item flexRowBetween" v-for="(item,index) in mainData">
+					<view class="ll flex">
+						<view class="num" >{{index+1}}</view>
+						<view class="fs13">{{item.userInfo&&item.userInfo.phone?item.userInfo.phone:''}}</view>
+					</view>
+					<view class="rr flexEnd">
+						<view class="flexColumn">
+							<view class="pubColor">{{item.count}}</view>
+							<view class="fs10 color6">获得红包</view>
+						</view>
 					</view>
 				</view>
 			</view>
+			
 		</view>
 			
 		<!--底部tab键-->
@@ -68,18 +74,87 @@
 		data() {
 			return {
 				Router:this.$Router,
-				showView: false,
-				score:'',
-				wx_info:{}
+				rankData:{},
+				mainData:[]
 			}
 		},
+		
 		onLoad() {
 			const self = this;
-			//self.$Utils.loadAll(['getMainData'], self);
+			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
+			self.$Utils.loadAll(['getMainData','getRankData'], self);
 		},
+		
+		onReachBottom() {
+			console.log('onReachBottom')
+			const self = this;
+			if (!self.isLoadAll && uni.getStorageSync('loadAllArray')) {
+				self.paginate.currentPage++;
+				self.getMainData()
+			};
+		},
+		
 		methods: {
-
-
+			
+			getRankData() {
+				const self = this;
+				const postData = {};
+				postData.tokenFuncName = 'getUserToken';
+				const callback = (res) => {
+					if (res.solely_code==100000) {
+						self.rankData = res.info;
+					};
+					self.$Utils.finishFunc('getRankData');
+				};
+				self.$apis.getRank(postData, callback);
+			},
+			
+			getMainData(isNew) {
+				const self = this;
+				if (isNew) {
+					self.mainData = [];
+					self.paginate = {
+						count: 0,
+						currentPage: 1,
+						pagesize: 10,
+						is_page: true,
+					};
+				};
+				const postData = {};
+				postData.paginate = self.$Utils.cloneForm(self.paginate);
+				postData.searchItem = {
+					type:1,
+					user_type:0
+				};
+				postData.tokenFuncName = 'getUserToken';
+				postData.order = {
+					count:'desc'
+				};
+				postData.getAfter = {
+					userInfo:{
+						tableName:'UserInfo',
+						middleKey:'user_no',
+						key:'user_no',
+						searchItem:{
+							status:1
+						},
+						condition:'=',
+						info:['phone']
+					}
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData.push.apply(self.mainData, res.info.data);
+						for (var i = 0; i < self.mainData.length; i++) {
+							
+							self.mainData[i].userInfo.phone = self.mainData[i].userInfo.phone.replace(/^(\d{3})\d{4}(\d+)/,"$1****$2")
+						}
+					}
+					self.$Utils.finishFunc('getMainData');
+				};
+				self.$apis.rankGet(postData, callback);
+			},
+			
 		},
 	};
 </script>
@@ -98,8 +173,8 @@
 	.rankList .item .ll{width: 60%;}
 	.rankList .item .rr{width: 40%;}
 	.rankList .num{width:45rpx;height: 50rpx;margin-right: 20rpx;color: #999;font-size: 40rpx;text-align: center;}
-	.rankList .item:nth-of-type(1) .num{background: url(../../static/images/list-icon2.png) no-repeat 0 0/100% 100%;color:transparent; }
-	.rankList .item:nth-of-type(2) .num{background: url(../../static/images/list-icon3.png) no-repeat 0 0/100% 100%;color:transparent;}
-	.rankList .item:nth-of-type(3) .num{background: url(../../static/images/list-icon4.png) no-repeat 0 0/100% 100%;color:transparent;}
+	.realList .item:nth-of-type(1) .num{background: url(../../static/images/list-icon2.png) no-repeat 0 0/100% 100%;color:transparent; }
+	.realList .item:nth-of-type(2) .num{background: url(../../static/images/list-icon3.png) no-repeat 0 0/100% 100%;color:transparent;}
+	.realList .item:nth-of-type(3) .num{background: url(../../static/images/list-icon4.png) no-repeat 0 0/100% 100%;color:transparent;}
 	
 </style>

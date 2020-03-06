@@ -19,7 +19,7 @@
 		
 		
 		<view class="submitbtn" style="margin-top: 360rpx;">
-			<button class="btn" type="submint">确定</button>
+			<button class="btn" type="submint" @click="Utils.stopMultiClick(userInfoUpdate)">确定</button>
 		</view>
 		
 	</view>
@@ -30,31 +30,60 @@
 		data() {
 			return {
 				Router:this.$Router,
-				showView: false,
-				score:'',
-				wx_info:{},
-				is_show:false,
-				curr:1
+				Utils:this.$Utils,
+				curr:1,
+				submitData:{
+					gender:''
+				}
 			}
 		},
-		onLoad() {
+		
+		onLoad(options) {
 			const self = this;
+			self.curr = options.name;
+			self.submitData.gender = options.name
+			console.log('22',self.submitData.gender)
 			//self.$Utils.loadAll(['getMainData'], self);
 		},
+		
 		methods: {
+			
 			changeCurr(curr){
 				const self = this;
 				if(curr!=self.curr){
-					self.curr = curr
+					self.curr = curr;
+					self.submitData.gender = self.curr
 				}
 			},
-			getMainData() {
+			
+			userInfoUpdate() {
 				const self = this;
-				console.log('852369')
+				uni.setStorageSync('canClick', false);
+				if(self.submitData.gender==0){
+					uni.setStorageSync('canClick', true);
+					self.$Utils.showToast('请选择性别', 'none', 1000)
+					return
+				};
 				const postData = {};
-				postData.tokenFuncName = 'getProjectToken';
-				self.$apis.orderGet(postData, callback);
-			}
+				postData.tokenFuncName = 'getUserToken';
+				postData.searchItem = {
+					user_no: uni.getStorageSync('userInfo').user_no
+				};
+				postData.data = {};
+				postData.data = self.$Utils.cloneForm(self.submitData);
+				const callback = (data) => {				
+					if (data.solely_code == 100000) {
+						uni.setStorageSync('canClick', true);
+						uni.navigateBack({
+							delta:1
+						})
+					} else {
+						uni.setStorageSync('canClick', true);
+						self.$Utils.showToast(data.msg, 'none', 1000)
+					}	
+				};
+				self.$apis.userInfoUpdate(postData, callback);
+			},
 		}
 	};
 </script>

@@ -5,16 +5,16 @@
 			<view class="infor flex pdb20">
 				<image class="photo" src="../../static/images/about-img.png" mode=""></image>
 				<view style="width: 70%;">
-					<view class="fs16 pdb5">130****1235</view>
+					<view class="fs16 pdb5">{{userInfoData.phone}}</view>
 				</view>
 			</view>
 			<view class="flexRowBetween center headNum">
 				<view class="item">
-					<view class="mny ftw">5.26</view>
+					<view class="mny ftw">{{userInfoData.balance}}</view>
 					<view>账户余额</view>
 				</view>
 				<view class="item">
-					<view class="mny ftw">0.26</view>
+					<view class="mny ftw">{{userInfoData.yesterday?userInfoData.yesterday.count:''}}</view>
 					<view>昨天收益(元)</view>
 				</view>
 			</view>
@@ -25,7 +25,7 @@
 			<view class="item flexRowBetween">
 				<view class="flex">
 					<view class="fs12 color9 mgr15">可提现金额</view>
-					<view class="fs16">0</view>
+					<view class="fs16">{{userInfoData.balance}}</view>
 				</view>
 				<view class="txBtn" @click="Router.navigateTo({route:{path:'/pages/user-cashOut/user-cashOut'}})">提现</view>
 			</view>
@@ -83,18 +83,66 @@
 		data() {
 			return {
 				Router:this.$Router,
-				showView: false,
-				score:'',
-				wx_info:{}
+				userInfoData:{}
 			}
 		},
 		onLoad() {
 			const self = this;
 			//self.$Utils.loadAll(['getMainData'], self);
 		},
+		
+		onShow() {
+			const self = this;
+			self.$Utils.loadAll(['getUserInfoData'], self);
+		},
+		
 		methods: {
 
-
+			getUserInfoData() {
+				const self = this;
+				var yesterday = new Date(new Date().setHours(0, 0, 0, 0)).getTime() / 1000-86400;
+				var today = new Date(new Date().setHours(0, 0, 0, 0)).getTime() / 1000;
+				const postData = {};
+				postData.tokenFuncName = 'getUserToken';
+				postData.searchItem = {
+					user_no: uni.getStorageSync('userInfo').user_no
+				};
+				postData.getAfter = {
+					 yesterday: {
+						tableName: 'FlowLog',
+						searchItem: {
+							status:1,
+							type:2,
+							withdraw:0,
+							create_time:['between',[yesterday,today]]
+						},
+						middleKey: 'user_no',
+						key: 'user_no',
+						condition: 'in',
+						compute:{
+						  count:[
+						    'sum',
+						    'count',
+						    {
+						      status:1,
+						      behavior:1,
+						      type:2,
+							  create_time:['between',[yesterday,today]]
+						    }
+						  ]
+						},
+					},
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.userInfoData = res.info.data[0];
+						self.userInfoData.phone = self.userInfoData.phone.replace(/^(\d{3})\d{4}(\d+)/,"$1****$2")
+					};
+					self.$Utils.finishFunc('getUserInfoData');
+				};
+				self.$apis.userInfoGet(postData, callback);
+			},
+			
 		},
 	};
 </script>
