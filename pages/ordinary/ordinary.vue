@@ -161,8 +161,8 @@
 					return
 				};
 				var ymd = new Date().getFullYear() +  "-" +(new Date().getMonth() + 1).toString().padStart(2, "0") +  "-" + new Date().getDate().toString().padStart(2, "0")
-				var beginDateStr = ymd+' '+self.mainData[index].start_hour+':'+self.mainData[index].start_min;
-				var endDateStr = ymd+' '+self.mainData[index].end_hour+':'+self.mainData[index].end_min;
+				var beginDateStr = ymd.replace(/\.|\-/g, '/')+' '+self.mainData[index].start_hour+':'+self.mainData[index].start_min;
+				var endDateStr = ymd.replace(/\.|\-/g, '/')+' '+self.mainData[index].end_hour+':'+self.mainData[index].end_min;
 				if(!self.isDuringDate(beginDateStr,endDateStr)){
 					self.noOpenshow();
 					return
@@ -175,7 +175,11 @@
 				var callback = function(res) {
 					if(res.solely_code==100000){
 						uni.setStorageSync('canClick', true);
-						self.$Utils.showToast(res.msg, 'none', 1000)
+						self.Router.navigateTo({
+							route: {
+								path: '/pages/grabMoney/grabMoney?money=' + res.info.reward
+							}
+						})
 					}else{
 						//uni.setStorageSync('canClick', true);
 						self.$Utils.showToast(res.msg, 'none', 1000)
@@ -187,9 +191,9 @@
 			isDuringDate(beginDateStr, endDateStr) {
 				console.log('beginDateStr',beginDateStr)
 				console.log('endDateStr',endDateStr)
-				var curDate = new Date(),
-					beginDate = new Date(beginDateStr),
-					endDate = new Date(endDateStr);
+				var curDate = new Date();
+				var	beginDate = new Date(beginDateStr);
+				var	endDate = new Date(endDateStr);
 				if (curDate >= beginDate && curDate <= endDate) {
 					return true;
 				}

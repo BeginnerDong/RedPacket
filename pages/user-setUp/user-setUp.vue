@@ -116,9 +116,12 @@
 					success: function(res) {
 						console.log(res);
 						var tempFilePaths = res.tempFilePaths[0];
+						var file = res.tempFiles[0];
+						var obj = res.tempFiles[0].path.lastIndexOf(".");
+						var ext = res.tempFiles[0].path.substr(obj+1);
 						console.log(callback)
 						self.$Utils.uploadFile(tempFilePaths, 'file', {
-							tokenFuncName: 'getUserToken',
+							tokenFuncName: 'getUserToken',ext:ext,md5:'md5',totalSize:file.size,start:0,chunkSize:file.size,originName:'headImg'
 						}, callback)
 					},
 					fail: function(err) {

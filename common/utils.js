@@ -60,7 +60,7 @@ export default {
 				return;
 			};
 		};
-		wx.uploadFile({
+		uni.uploadFile({
 			url: 'http://106.12.155.217/redpacket/public/index.php/api/v1/Base/FtpFile/upload',
 			filePath: filePath,
 			name: name,
@@ -713,10 +713,7 @@ export default {
 		var seperator1 = "-";
 		var seperator2 = ":";
 		var date = parseInt(date);
-		
-		
 		var date = new Date(date);
-		
 		var month = date.getMonth() + 1;
 		var strDate = date.getDate();
 		if (month >= 1 && month <= 9) {
@@ -739,7 +736,10 @@ export default {
 		} else if (type == "hms") {
 			//转时分秒
 			var currentdate = date.getHours() + seperator2 + date.getMinutes() + seperator2 + date.getSeconds();
-		}
+		} else if (type == "md") {
+			// 转年月日
+			var currentdate =  month + '月' + strDate + '日';
+		} 
 		return currentdate;
 	}
 

@@ -22,7 +22,7 @@
 					<input type="password" v-model="submitData.password" placeholder="请输入密码" placeholder-class="placeholder">
 				</view>
 			</view>
-			<view class="item flex">
+			<!-- <view class="item flex">
 				<view class="icon">
 					<image src="../../static/images/the-login-icon2.png" mode=""></image>
 				</view>
@@ -32,7 +32,7 @@
 			</view>
 			<view class="flexEnd mgt10">
 				<view class="pubColor">获取验证码</view>
-			</view>
+			</view> -->
 			
 			<view class="item loginbtn center flexCenter" style="margin-top: 80rpx;">
 				<button class="btn" type="submint" @click="Utils.stopMultiClick(submit)">注册</button>
@@ -62,6 +62,7 @@
 		onLoad(options) {
 			const self = this;
 			// self.$Utils.loadAll(['getMainData'], self);
+			uni.setStorageSync('canClick', true);
 		},
 		
 		methods: {

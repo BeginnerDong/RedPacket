@@ -3,7 +3,7 @@
 		
 		<view class="userHead pdlr4 pubBj white">
 			<view class="infor flex pdb20">
-				<image class="photo" src="../../static/images/about-img.png" mode=""></image>
+				<image class="photo" :src="userInfoData.mainImg&&userInfoData.mainImg[0]?userInfoData.mainImg[0].url:'../../static/images/about-img.png'" mode=""></image>
 				<view style="width: 70%;">
 					<view class="fs16 pdb5">{{userInfoData.phone}}</view>
 				</view>
@@ -125,7 +125,7 @@
 						    'count',
 						    {
 						      status:1,
-						      behavior:1,
+						      behavior:0,
 						      type:2,
 							  create_time:['between',[yesterday,today]]
 						    }

@@ -47,7 +47,7 @@
 		
 		onLoad() {
 			const self = this;
-		
+			uni.hideLoading();
 			// self.$Utils.loadAll(['getMainData'], self);
 		},
 		
@@ -66,9 +66,7 @@
 							uni.setStorageSync('user_token', res.token);
 							uni.setStorageSync('user_info', res.info);
 							setTimeout(function() {
-								uni.navigateBack({
-									delta:1
-								})
+								self.Router.reLaunch({route:{path:'/pages/index/index'}})
 							}, 1000);
 						} else {
 							self.$Utils.showToast(res.msg,'none')

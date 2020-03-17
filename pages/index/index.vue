@@ -179,9 +179,10 @@
 				postData.paginate = self.$Utils.cloneForm(self.paginate);
 				postData.searchItem = {
 					user_type:0,
-					withdraw:1
+					withdraw:1,
+					withdraw_status:1
 				};
-				postData.tokenFuncName = 'getUserToken';
+				/* postData.tokenFuncName = 'getUserToken';
 				postData.getAfter = {
 					userInfo:{
 						tableName:'UserInfo',
@@ -193,14 +194,14 @@
 						condition:'=',
 						info:['phone']
 					}
-				};
+				}; */
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
 						self.flowLogData.push.apply(self.flowLogData, res.info.data);
 						for (var i = 0; i < self.flowLogData.length; i++) {
 							self.flowLogData[i].count = -(parseFloat(self.flowLogData[i].count).toFixed(2))
-							self.flowLogData[i].userInfo.phone = self.flowLogData[i].userInfo.phone.replace(/^(\d{3})\d{4}(\d+)/,"$1****$2");
-							self.msg.push(self.flowLogData[i].userInfo.phone+'成功提现'+self.flowLogData[i].count+'元整')
+							self.flowLogData[i].phone = self.flowLogData[i].phone.replace(/^(\d{3})\d{4}(\d+)/,"$1****$2");
+							self.msg.push(self.flowLogData[i].phone+'成功提现'+self.flowLogData[i].count+'元整')
 						}
 					}
 					self.$Utils.finishFunc('getFlowGet');
@@ -229,8 +230,8 @@
 					return
 				};
 				var ymd = new Date().getFullYear() +  "-" +(new Date().getMonth() + 1).toString().padStart(2, "0") +  "-" + new Date().getDate().toString().padStart(2, "0")
-				var beginDateStr = ymd+' '+self.mainData[index].start_hour+':'+self.mainData[index].start_min;
-				var endDateStr = ymd+' '+self.mainData[index].end_hour+':'+self.mainData[index].end_min;
+				var beginDateStr = ymd.replace(/\.|\-/g, '/')+' '+self.mainData[index].start_hour+':'+self.mainData[index].start_min;
+				var endDateStr = ymd.replace(/\.|\-/g, '/')+' '+self.mainData[index].end_hour+':'+self.mainData[index].end_min;
 				if(!self.isDuringDate(beginDateStr,endDateStr)){
 					self.noOpenshow();
 					return
@@ -243,7 +244,12 @@
 				var callback = function(res) {
 					if(res.solely_code==100000){
 						uni.setStorageSync('canClick', true);
-						self.$Utils.showToast(res.msg, 'none', 1000)
+						//self.$Utils.showToast(res.msg, 'none', 1000);
+						self.Router.navigateTo({
+							route: {
+								path: '/pages/grabMoney/grabMoney?money=' + res.info.reward
+							}
+						})
 					}else{
 						//uni.setStorageSync('canClick', true);
 						self.$Utils.showToast(res.msg, 'none', 1000)
@@ -255,9 +261,9 @@
 			isDuringDate(beginDateStr, endDateStr) {
 				console.log('beginDateStr',beginDateStr)
 				console.log('endDateStr',endDateStr)
-				var curDate = new Date(),
-					beginDate = new Date(beginDateStr),
-					endDate = new Date(endDateStr);
+				var curDate = new Date();
+				var	beginDate = new Date(beginDateStr);
+				var	endDate = new Date(endDateStr);
 				if (curDate >= beginDate && curDate <= endDate) {
 					return true;
 				}
@@ -415,11 +421,21 @@
 <style>
 	@import "../../assets/style/navbar.css";
 	@import "../../assets/style/proList.css";
-
+	
 	page {
 		padding-bottom: 140rpx;
 	}
-
+	button{
+		background: none;
+		line-height: 1.5;
+	}
+	button::after{
+		border: none;
+	}
+	.button-hover{
+		color: #000000;
+		background: none;
+	}
 	.swiper-box {
 		height: 360rpx;
 		box-sizing: border-box;

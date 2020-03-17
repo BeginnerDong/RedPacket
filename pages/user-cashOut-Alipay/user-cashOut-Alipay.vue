@@ -85,6 +85,8 @@
 					account:1,
 					withdraw:1,
 					withdraw_status:0,
+					phone:uni.getStorageSync('user_info').login_name,
+					behavior:1
 				};
 				const callback = (data) => {				
 					if (data.solely_code == 100000) {					
