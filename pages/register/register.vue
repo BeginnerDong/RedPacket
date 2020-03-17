@@ -22,6 +22,14 @@
 					<input type="password" v-model="submitData.password" placeholder="请输入密码" placeholder-class="placeholder">
 				</view>
 			</view>
+			<view class="item flex mgb20">
+				<view class="icon">
+					<image src="../../static/images/the-login-icon1.png" mode=""></image>
+				</view>
+				<view class="input">
+					<input type="password" placeholder="请输入确定密码" placeholder-class="placeholder">
+				</view>
+			</view>
 			<!-- <view class="item flex">
 				<view class="icon">
 					<image src="../../static/images/the-login-icon2.png" mode=""></image>
@@ -117,7 +125,7 @@
 	page{padding-bottom: 60rpx;}	
 	.loginBj image{width: 100%;height: 344rpx;}
 	
-	.loginCont{width: 80%;margin: 0 auto;position: relative;z-index: 2;background: #fff;padding: 50rpx 60rpx 80rpx 60rpx;box-sizing: border-box;margin-top: -120rpx;}
+	.loginCont{width: 80%;margin: 0 auto;position: relative;z-index: 2;background: #fff;padding: 60rpx 60rpx 80rpx 60rpx;box-sizing: border-box;margin-top: -120rpx;}
 	.loginCont .item{border-radius: 40rpx;height: 80rpx;box-sizing: border-box;padding: 0 30rpx;border: 1px solid #eee;}
 	.loginCont .item .icon image{width: 36rpx;height: 36rpx;margin-right: 30rpx;}
 	.loginCont .item .input{width: 360rpx;}
