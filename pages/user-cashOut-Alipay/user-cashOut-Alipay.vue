@@ -5,7 +5,7 @@
 			<view class="item flexRowBetween" >
 				<view class="ll">您的姓名</view>
 				<view class="rr">
-					<input type="text" placeholder="请输入您的真实姓名" placeholder-class="placeholder">
+					<input type="text" v-model="submitData.name" placeholder="请输入您的真实姓名" placeholder-class="placeholder">
 				</view>
 			</view>
 			<view class="item flexRowBetween" >
@@ -42,7 +42,8 @@
 				userInfoData:{},
 				submitData:{
 					count:'',
-					trade_info:''
+					trade_info:'',
+					name:''
 				},
 			}
 		},

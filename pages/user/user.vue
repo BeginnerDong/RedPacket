@@ -50,6 +50,13 @@
 				</view>
 				<view class="rr"><image class="arrowR" src="../../static/images/about-icon3.png" mode=""></image></view>
 			</view>
+			<view class="item flexRowBetween" @click="copy">
+				<view class="ll flex">
+					<image class="icon" src="../../static/images/about-icon4.png" mode=""></image>
+					<view class="">去分享</view>
+				</view>
+				<view class="rr"><image class="arrowR" src="../../static/images/about-icon3.png" mode=""></image></view>
+			</view>
 		</view>
 			
 		<!--底部tab键-->
@@ -93,10 +100,37 @@
 		
 		onShow() {
 			const self = this;
-			self.$Utils.loadAll(['getUserInfoData'], self);
+			self.$Utils.loadAll(['getUserInfoData','getLabelData'], self);
 		},
 		
 		methods: {
+			
+			getLabelData() {
+				const self = this;
+				self.bannerData = [];
+				const postData = {};
+				postData.searchItem = {
+					thirdapp_id: 2,
+					title:'分享'
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.labelData = res.info.data[0]
+					}
+					self.$Utils.finishFunc('getLabelData');
+				};
+				self.$apis.labelGet(postData, callback);
+			},
+			
+			copy(){
+				const self = this;
+				uni.setClipboardData({
+				    data: self.labelData.url,
+				    success: function () {
+				        self.$Utils.showToast('分享链接已复制', 'none')
+				    }
+				});
+			},
 
 			getUserInfoData() {
 				const self = this;

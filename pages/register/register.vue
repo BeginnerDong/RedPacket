@@ -27,7 +27,7 @@
 					<image src="../../static/images/the-login-icon1.png" mode=""></image>
 				</view>
 				<view class="input">
-					<input type="password" placeholder="请输入确定密码" placeholder-class="placeholder">
+					<input type="password" v-model="submitData.passwordCopy" placeholder="请再次输入密码" placeholder-class="placeholder">
 				</view>
 			</view>
 			<!-- <view class="item flex">
@@ -62,8 +62,10 @@
 				is_show:false,
 				submitData:{
 					phone:'',
-					password:''
-				}
+					password:'',
+					passwordCopy:''
+				},
+				
 			}
 		},
 		
@@ -84,6 +86,11 @@
 				console.log('self.submitData',self.submitData)
 				
 				if (pass) {	
+					if(self.submitData.password != self.submitData.passwordCopy){
+						uni.setStorageSync('canClick', true);
+						self.$Utils.showToast('两次输入密码不一致', 'none')
+						return
+					}
 					self.register();
 				} else {
 					uni.setStorageSync('canClick', true);
