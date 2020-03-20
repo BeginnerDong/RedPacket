@@ -50,7 +50,7 @@
 				</view>
 				<view class="rr"><image class="arrowR" src="../../static/images/about-icon3.png" mode=""></image></view>
 			</view>
-			<view class="item flexRowBetween" @click="copy">
+			<view class="item flexRowBetween" @click="Router.navigateTo({route:{path:'/pages/user-share/user-share'}})">
 				<view class="ll flex">
 					<image class="icon" src="../../static/images/about-icon4.png" mode=""></image>
 					<view class="">去分享</view>
