@@ -93,19 +93,20 @@
 					withdraw:1,
 					withdraw_status:0,
 					phone:uni.getStorageSync('user_info').login_name,
-					behavior:1
+					behavior:1,
+					name:self.submitData.name
 				};
 				const callback = (data) => {				
 					if (data.solely_code == 100000) {					
-						self.$Utils.showToast('提现成功', 'none');
+						self.$Utils.showToast('提交成功，等待后台审核', 'none');
 						setTimeout(function() {
 							uni.navigateBack({
 								delta:1
 							})
-						}, 800)
+						}, 1000)
 					} else {
 						uni.setStorageSync('canClick', true);
-						self.$Utils.showToast(data.msg, 'none', 1000)
+						self.$Utils.showToast(data.msg, 'none', 1500)
 					}	
 				};
 				self.$apis.flowLogAdd(postData, callback);

@@ -86,6 +86,11 @@
 				console.log('self.submitData',self.submitData)
 				
 				if (pass) {	
+					if (self.submitData.phone.trim().length != 11 || !/^1[3|4|5|6|7|8|9]\d{9}$/.test(self.submitData.phone)) {
+						uni.setStorageSync('canClick', true);
+						self.$Utils.showToast('手机格式不正确', 'none')	
+						return
+					};
 					if(self.submitData.password != self.submitData.passwordCopy){
 						uni.setStorageSync('canClick', true);
 						self.$Utils.showToast('两次输入密码不一致', 'none')
@@ -111,9 +116,7 @@
 						uni.setStorageSync('user_token', data.token);
 						uni.setStorageSync('user_info', data.info);
 						setTimeout(function() {
-							uni.navigateBack({
-								delta:1
-							})
+							self.Router.reLaunch({route:{path:'/pages/index/index'}})
 						}, 1000);
 					} else {
 						uni.setStorageSync('canClick', true);

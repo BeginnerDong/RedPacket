@@ -53,9 +53,13 @@
 					if (res.info.data.length > 0) {
 						self.mainData = res.info.data[0];
 						const regex = new RegExp('<img', 'gi');
+						//const type = new RegExp('<img');
+						
 						self.mainData.content = self.mainData.content.replace(regex, `<img style="max-width: 100%;"`);
+						//self.mainData.content = self.mainData.content.replace(type, `<image`);
+						
 					};
-					console.log(self.mainData)
+					console.log(self.mainData.content)
 					self.$Utils.finishFunc('getMainData');
 				};
 				self.$apis.articleGet(postData, callback);
