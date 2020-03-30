@@ -11,7 +11,7 @@
 					<image src="../../static/images/the-login-icon.png" mode=""></image>
 				</view>
 				<view class="input">
-					<input type="text" v-model="submitData.login_name" placeholder="请输入手机号" placeholder-class="placeholder">
+					<input type="number" onKeypress="javascript:if(event.keyCode == 32)event.returnValue = false;" v-model="submitData.login_name" maxlength="11" placeholder="请输入手机号" placeholder-class="placeholder">
 				</view>
 			</view>
 			<view class="item flex mgb20">
@@ -19,7 +19,7 @@
 					<image src="../../static/images/the-login-icon1.png" mode=""></image>
 				</view>
 				<view class="input">
-					<input type="password" v-model="submitData.password" placeholder="请输入密码" placeholder-class="placeholder">
+					<input type="password" onKeypress="javascript:if(event.keyCode == 32)event.returnValue = false;" maxlength="18" v-model="submitData.password" placeholder="请输入密码" placeholder-class="placeholder">
 				</view>
 			</view>
 			

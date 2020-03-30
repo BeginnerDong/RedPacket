@@ -3,6 +3,16 @@
 		<!-- <view class="bigTit center white pubBj pdlr4">
 			
 		</view> -->
+		
+		<view class="flexRowBetween pdlr4 pdt15 pdb10 white" style="background-color: #F23132;color: #fff;position: relative;">
+			<view class="flexCenter" style="text-align: center;font-size: 16px;width: 100%;">首页</view>
+			<!-- <view class="fs12 flexEnd">
+				<view class="dian"></view>
+				<view class="dian"></view>
+				<view class="dian"></view>
+			</view> -->
+			<view  style="font-size: 14px;position: absolute;right: 20rpx;" v-if="!isLogin">登录/注册</view>
+		</view>
 
 		<view class="">
 			<view class="banner-box">
@@ -287,6 +297,17 @@
 				postData.order = {
 					listorder: 'desc'
 				};
+				/* postData.getAfter = {
+					order:{
+						tableName:'Order',
+						middleKey:'id',
+						key:'product_id',
+						searchItem:{
+							status:1
+						},
+						condition:'='
+					}
+				}; */
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
 						self.mainData.push.apply(self.mainData, res.info.data)
@@ -432,6 +453,7 @@
 	button::after{
 		border: none;
 	}
+	.dian{width: 10rpx;height: 10rpx;border-radius: 50%;background: #FFF;margin-left: 10rpx;}
 	.button-hover{
 		color: #000000;
 		background: none;

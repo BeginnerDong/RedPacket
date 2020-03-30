@@ -17,7 +17,7 @@
 			<view class="item flexRowBetween" >
 				<view class="ll">提现金额</view>
 				<view class="rr">
-					<input type="text" v-model="submitData.count" placeholder="请输入" placeholder-class="placeholder">
+					<input type="number" v-model="submitData.count" :placeholder="'请输入(可提现金额'+userInfoData.balance+'元)'" placeholder-class="placeholder">
 				</view>
 			</view>
 		</view>
@@ -97,13 +97,9 @@
 					name:self.submitData.name
 				};
 				const callback = (data) => {				
-					if (data.solely_code == 100000) {					
-						self.$Utils.showToast('提交成功，等待后台审核', 'none');
-						setTimeout(function() {
-							uni.navigateBack({
-								delta:1
-							})
-						}, 1000)
+					if (data.solely_code == 100000) {			
+						self.userInfoUpdate()
+						
 					} else {
 						uni.setStorageSync('canClick', true);
 						self.$Utils.showToast(data.msg, 'none', 1500)
@@ -123,7 +119,9 @@
 				postData.searchItem.user_no = uni.getStorageSync('user_info').user_no
 				const callback = (res) => {
 					if (res.solely_code == 100000 && res.info.data[0]) {
-						self.userInfoData = res.info.data[0]
+						self.userInfoData = res.info.data[0];
+						self.submitData.name = self.userInfoData.name;
+						self.submitData.wechat = self.userInfoData.trade_info;
 					} else {
 						self.$Utils.showToast(res.msg, 'none');
 					};
@@ -131,6 +129,35 @@
 			
 				};
 				self.$apis.userInfoGet(postData, callback);
+			},
+			
+			userInfoUpdate() {
+				const self = this;
+				uni.setStorageSync('canClick', false);
+				const postData = {};
+				postData.tokenFuncName = 'getUserToken';
+				postData.searchItem = {
+					user_no: uni.getStorageSync('userInfo').user_no
+				};
+				postData.data = {
+					name:self.submitData.name,
+					wechat:self.submitData.trade_info
+				};
+				const callback = (data) => {				
+					if (data.solely_code == 100000) {
+						uni.setStorageSync('canClick', true);
+						self.$Utils.showToast('提交成功，等待后台审核', 'none');
+						setTimeout(function() {
+							uni.navigateBack({
+								delta:1
+							})
+						}, 1000)
+					} else {
+						uni.setStorageSync('canClick', true);
+						self.$Utils.showToast(data.msg, 'none', 1000)
+					}	
+				};
+				self.$apis.userInfoUpdate(postData, callback);
 			},
 			
 		}

@@ -10,6 +10,7 @@
 				<view class="rr flexEnd pubColor">{{item.count}}</view>
 			</view>
 		</view>
+		<view class="nodata" v-if="mainData.length==0"><image src="../../static/images/nodata.png" mode=""></image></view>
 	</view>
 </template>
 
@@ -22,6 +23,7 @@
 				searchItem:{
 					type:2,
 					thirdapp_id:2,
+					count:['>',0]
 				},
 			}
 		},

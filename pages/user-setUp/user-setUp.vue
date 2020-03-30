@@ -2,8 +2,8 @@
 	<view>
 		
 		<view class="myRowBetween pdlr4 whiteBj">
-			<view class="item flexRowBetween">
-				<view class="ll">图像</view>
+			<!-- <view class="item flexRowBetween">
+				<view class="ll">头像</view>
 				<view class="rr flexEnd">
 					<view class="userPhoto" @click="upLoadImg('mainImg')" v-if="submitData.mainImg.length>0">
 						<image :src="submitData.mainImg[0].url" mode=""></image>
@@ -13,7 +13,7 @@
 					</view>
 					<image class="arrowR" src="../../static/images/about-icon3.png" mode=""></image>
 				</view>
-			</view>
+			</view> -->
 			<view class="item flexRowBetween">
 				<view class="ll">手机号</view>
 				<view class="rr flexEnd">
@@ -39,9 +39,9 @@
 					<image class="arrowR" src="../../static/images/about-icon3.png" mode=""></image></view>
 			</view>
 			<view class="item flexRowBetween" @click="Router.navigateTo({route:{path:'/pages/user-setUp-password/user-setUp-password'}})" >
-				<view class="ll">登录密码</view>
+				<view class="ll">修改密码</view>
 				<view class="rr flexEnd">
-					<view class="color9 fs13">{{password}}</view>
+					<!-- <view class="color9 fs13">{{password}}</view> -->
 					<image class="arrowR" src="../../static/images/about-icon3.png" mode=""></image></view>
 			</view>
 		</view>
@@ -96,10 +96,7 @@
 			
 			upLoadImg(type) {
 				const self = this;			
-				uni.showLoading({
-					mask: true,
-					title: '上传中',
-				});
+				
 				const callback = (res) => {
 					console.log('res', res)
 					if (res.solely_code == 100000) {
@@ -161,7 +158,7 @@
 						if (res.confirm) {
 							uni.removeStorageSync('user_info');
 							uni.removeStorageSync('user_token');
-							self.Router.redirectTo({route:{path:'/pages/index/index'}})
+							self.Router.reLaunch({route:{path:'/pages/index/index'}})
 						} else if (res.cancel) {
 							console.log('用户点击取消');
 						}

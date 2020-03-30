@@ -11,7 +11,7 @@
 					<image src="../../static/images/the-login-icon.png" mode=""></image>
 				</view>
 				<view class="input">
-					<input type="text" v-model="submitData.phone" placeholder="请输入手机号" placeholder-class="placeholder">
+					<input type="number" onKeypress="javascript:if(event.keyCode == 32)event.returnValue = false;" v-model="submitData.phone" maxlength="11" placeholder="请输入手机号" placeholder-class="placeholder">
 				</view>
 			</view>
 			<view class="item flex mgb20">
@@ -19,7 +19,7 @@
 					<image src="../../static/images/the-login-icon1.png" mode=""></image>
 				</view>
 				<view class="input">
-					<input type="password" v-model="submitData.password" placeholder="请输入密码" placeholder-class="placeholder">
+					<input type="password" onKeypress="javascript:if(event.keyCode == 32)event.returnValue = false;" v-model="submitData.password" maxlength="18" placeholder="请输入密码" placeholder-class="placeholder">
 				</view>
 			</view>
 			<view class="item flex mgb20">
@@ -27,7 +27,7 @@
 					<image src="../../static/images/the-login-icon1.png" mode=""></image>
 				</view>
 				<view class="input">
-					<input type="password" v-model="submitData.passwordCopy" placeholder="请再次输入密码" placeholder-class="placeholder">
+					<input type="password" onKeypress="javascript:if(event.keyCode == 32)event.returnValue = false;" v-model="submitData.passwordCopy" maxlength="18" placeholder="请再次输入密码" placeholder-class="placeholder">
 				</view>
 			</view>
 			<!-- <view class="item flex">
@@ -43,7 +43,7 @@
 			</view> -->
 			
 			<view class="item loginbtn center flexCenter" style="margin-top: 80rpx;">
-				<button class="btn" type="submint" @click="Utils.stopMultiClick(submit)">注册</button>
+				<button class="btn" type="submint" style="border: none;" @click="Utils.stopMultiClick(submit)">注册</button>
 			</view>
 		</view>
 		

@@ -3,7 +3,9 @@
 		
 		<view class="userHead pdlr4 pubBj white">
 			<view class="infor flex pdb20">
-				<image class="photo" :src="userInfoData.mainImg&&userInfoData.mainImg[0]?userInfoData.mainImg[0].url:'../../static/images/about-img.png'" mode=""></image>
+				<image class="photo" @click="upLoadImg('mainImg')" v-if="submitData.mainImg.length>0" 
+				:src="userInfoData.mainImg[0].url" mode=""></image>
+				<image class="photo" src="../../static/images/about-img.png"  mode="" @click="upLoadImg('mainImg')" v-else></image>
 				<view style="width: 70%;">
 					<view class="fs16 pdb5">{{userInfoData.phone}}</view>
 				</view>
@@ -90,7 +92,10 @@
 		data() {
 			return {
 				Router:this.$Router,
-				userInfoData:{}
+				userInfoData:{},
+				submitData:{
+					mainImg:[]
+				},
 			}
 		},
 		onLoad() {
@@ -171,10 +176,71 @@
 					if (res.info.data.length > 0) {
 						self.userInfoData = res.info.data[0];
 						self.userInfoData.phone = self.userInfoData.phone.replace(/^(\d{3})\d{4}(\d+)/,"$1****$2")
+						self.submitData.mainImg = self.userInfoData.mainImg;
 					};
 					self.$Utils.finishFunc('getUserInfoData');
 				};
 				self.$apis.userInfoGet(postData, callback);
+			},
+			
+			
+			upLoadImg(type) {
+				const self = this;			
+				
+				const callback = (res) => {
+					console.log('res', res)
+					if(res){
+						if (res.solely_code == 100000) {
+							self.submitData[type] = [];
+							self.submitData[type].push({url:res.info.url,type:'image'})
+							console.log(self.submitData)
+							self.userInfoUpdate()
+						} else {
+							self.$Utils.showToast('网络故障', 'none')
+						}
+					}else{
+						self.$Utils.showToast('上传失败', 'none')
+					}
+					
+				};				
+				uni.chooseImage({
+					count: 1,
+					success: function(res) {
+						console.log(res);
+						var tempFilePaths = res.tempFilePaths[0];
+						var file = res.tempFiles[0];
+						var obj = res.tempFiles[0].path.lastIndexOf(".");
+						var ext = res.tempFiles[0].path.substr(obj+1);
+						console.log(callback)
+						self.$Utils.uploadFile(tempFilePaths, 'file', {
+							tokenFuncName: 'getUserToken',ext:ext,md5:'md5',totalSize:file.size,start:0,chunkSize:file.size,originName:'headImg'
+						}, callback)
+					},
+					fail: function(err) {
+						uni.hideLoading();
+					},			
+				})			
+			},
+			
+			userInfoUpdate() {
+				const self = this;
+				const postData = {};
+				postData.tokenFuncName = 'getUserToken';
+				postData.searchItem = {
+					user_no: uni.getStorageSync('userInfo').user_no
+				};
+				postData.data = {};
+				postData.data = self.$Utils.cloneForm(self.submitData);
+				const callback = (data) => {				
+					if (data.solely_code == 100000) {
+						uni.setStorageSync('canClick', true);
+						self.getUserInfoData()
+					} else {
+						uni.setStorageSync('canClick', true);
+						self.$Utils.showToast(data.msg, 'none', 1000)
+					}	
+				};
+				self.$apis.userInfoUpdate(postData, callback);
 			},
 			
 		},
