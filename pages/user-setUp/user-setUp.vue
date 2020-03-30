@@ -32,10 +32,10 @@
 					<view class="color9 fs13">{{userInfoData.birthday!=''?userInfoData.birthday:'请选择生日'}}</view>
 					<image class="arrowR" src="../../static/images/about-icon3.png" mode=""></image></view>
 			</view>
-			<view class="item flexRowBetween" @click="Router.navigateTo({route:{path:'/pages/user-setUp-adrs/user-setUp-adrs?name='+userInfoData.address}})" >
+			<view class="item flexRowBetween" @click="Router.navigateTo({route:{path:'/pages/user-setUp-adrs/user-setUp-adrs?name='+userInfoData.address+'&passage1='+userInfoData.passage1}})" >
 				<view class="ll">地区</view>
 				<view class="rr flexEnd">
-					<view class="color9 fs13">{{userInfoData.address!=''?userInfoData.address:'请填写地区'}}</view>
+					<view class="color9 fs13">{{userInfoData.address!=''?userInfoData.address:'请选择地区'}}</view>
 					<image class="arrowR" src="../../static/images/about-icon3.png" mode=""></image></view>
 			</view>
 			<view class="item flexRowBetween" @click="Router.navigateTo({route:{path:'/pages/user-setUp-password/user-setUp-password'}})" >

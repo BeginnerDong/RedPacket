@@ -12,11 +12,11 @@
 
 /* 信息RowBetween 右侧输入内容 */
 .myRowBetween .item{padding: 30rpx 0;border-bottom: 1px solid #eee;}
-.myRowBetween .item .ll{width: 60%;}
+.myRowBetween .item .ll{width: 50%;}
 .myRowBetween .item .ll .photo{width: 80rpx; height: 80rpx;border-radius: 50%;display: block;overflow: hidden;margin-right: 20rpx;}
 .myRowBetween .item .ll .photo image{width: 100%; height: 100%; display: block;}
 
-.myRowBetween .item .rr{width: 40%;text-align: right;font-size: 30rpx; display: flex; justify-content: flex-end;align-items: center;font-size: 26rpx;}
+.myRowBetween .item .rr{width: 50%;text-align: right;font-size: 30rpx; display: flex; justify-content: flex-end;align-items: center;font-size: 26rpx;}
 .myRowBetween .item input{width: 100%; line-height: 48rpx;display: block;box-sizing: border-box;font-size: 26rpx; color: #666;text-align: right;}
 .myRowBetween .item textarea{width: 100%;height:200rpx; padding: 20rpx; box-sizing: border-box;border: 1px solid #eee; font-size: 24rpx;display: block;}
 

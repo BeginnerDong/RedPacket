@@ -18,7 +18,9 @@
 					</view>
 				</view>
 				<view class="rr flexEnd">
-					<view class="robBtn"  @click="grab(index)">抢红包</view>
+					<view class="robBtn" v-if="(!isLogin&&item.isStart)||(isLogin&&item.order&&item.order.length==0&&item.isStart)" @click="grab(index)">抢红包</view>
+					<view class="robBtn" v-if="isLogin&&item.order&&item.order.length>0&&item.isStart">已参加</view>
+					<view class="robBtn" v-if="!item.isStart" style="color: #666;background-color: #f5f5f5;box-shadow: 0 2px 0 #000;">未开启</view>
 				</view>
 			</view>
 		</view>
@@ -111,6 +113,21 @@
 				postData.order = {
 					listorder: 'desc'
 				};
+				if(self.isLogin){
+					postData.getAfter = {
+						order:{
+							token:uni.getStorageSync('user_token'),
+							tableName:'FlowLog',
+							middleKey:'product_no',
+							key:'product_no',
+							searchItem:{
+								status:1,
+								user_no:uni.getStorageSync('user_info').user_no
+							},
+							condition:'='
+						}
+					};
+				};
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
 						self.mainData.push.apply(self.mainData, res.info.data)
@@ -127,6 +144,11 @@
 							if (self.mainData[i].end_min == 0) {
 								self.mainData[i].end_min = '00'
 							};
+							var ymd = new Date().getFullYear() +  "-" +(new Date().getMonth() + 1).toString().padStart(2, "0") +  "-" + new Date().getDate().toString().padStart(2, "0")
+							var beginDateStr = ymd.replace(/\.|\-/g, '/')+' '+self.mainData[i].start_hour+':'+self.mainData[i].start_min;
+							var endDateStr = ymd.replace(/\.|\-/g, '/')+' '+self.mainData[i].end_hour+':'+self.mainData[i].end_min;
+													
+							self.mainData[i].isStart = self.isDuringDate(beginDateStr,endDateStr)
 						}
 					};
 					self.$Utils.finishFunc('getMainData');

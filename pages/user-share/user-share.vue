@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="white pdlr4">
-			<view class="center fs15 pdt15 pdb10">斯科拉和复健科多少公交卡反倒</view>
+			<!-- <view class="center fs15 pdt15 pdb10">斯科拉和复健科多少公交卡反倒</view> -->
 			<view class="xqInfor">
 				<view class="cont fs13">
 					<view class="content ql-editor" style="padding:0;"
