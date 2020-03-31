@@ -4,7 +4,7 @@
 			
 		</view> -->
 		
-		<view class="flexRowBetween pdlr4 pdt15 pdb10 white" style="background-color: #F23132;color: #fff;position: relative;">
+		<view class="flexRowBetween pdlr4 pdt15 pdb10 white fixTitle" style="background-color: #F23132;color: #fff; height: 44px;box-sizing: border-box; ">
 			<view class="flexCenter" style="text-align: center;font-size: 16px;width: 100%;">首页</view>
 			<!-- <view class="fs12 flexEnd">
 				<view class="dian"></view>
@@ -13,6 +13,7 @@
 			</view> -->
 			<view  style="font-size: 14px;position: absolute;right: 20rpx;" v-if="!isLogin">登录/注册</view>
 		</view>
+		<view class="fixTitleH"></view>
 
 		<view class="">
 			<view class="banner-box">
@@ -460,6 +461,8 @@
 	page {
 		padding-bottom: 140rpx;
 	}
+	.fixTitle{position: fixed;left: 0;right: 0;right: 0; z-index: 1;}
+	.fixTitleH{height: 44px;}
 	button{
 		background: none;
 		line-height: 1.5;

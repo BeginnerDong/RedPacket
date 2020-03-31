@@ -20,7 +20,7 @@
 		</view>
 		
 		<view class="rankingNumH"></view>
-		<view class="f5H10"></view>
+		<!-- <view class="f5H10"></view> -->
 		
 		
 		<view class="rankList fs13 mglr4">
@@ -165,8 +165,8 @@
 	@import "../../assets/style/editInfor.css";
 	@import "../../assets/style/navbar.css";
 	page{padding-bottom: 130rpx;}
-	.rankingNum{padding: 40rpx 0;box-sizing: border-box;height: 274rpx;position: fixed;left: 0;top:88rpx;right: 0; z-index: 2;background: #fff;border-bottom: 20rpx solid #F5F5F5;}
-	.rankingNumH{width: 100%;height: 254RPX;}
+	.rankingNum{padding: 40rpx 0;box-sizing: border-box;height: 274rpx;position: fixed;left: 0;top:0rpx;right: 0; z-index: 2;background: #fff;border-bottom: 20rpx solid #F5F5F5;}
+	.rankingNumH{width: 100%;height: 254rpx;}
 	.title .icon{width: 27rpx;height: 36rpx;margin-right: 20rpx;}
 	.rankingNum .item{width: 33.33%;}
 	.rankingNum .item .num{font-size: 40rpx;line-height: 44rpx;margin-bottom: 10rpx;}
