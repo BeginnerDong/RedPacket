@@ -4,8 +4,8 @@
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",//设置页面标题文字
-				"onReachBottomDistance":100,
-				"navigationStyle":"custom"
+				"onReachBottomDistance":100
+				/* "navigationStyle":"custom" */
 				/* "app-plus": {
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
